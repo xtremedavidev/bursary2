@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SessionSelect from "./SessionSelect";
 import SemesterSelect from "./SemesterSelect";
 import FacultySelect from "./FacultySelect";
@@ -14,6 +14,38 @@ export default function Header({ onDataFetched }) {
   const [selectedSession, setselectedSession] = useState([]);
 
 
+const runOnceOnPageLoad = () => {
+  console.log('This runs once when the page is loaded.');
+  fetch(`https://bursarybackend.onrender.com/getData`)
+  .then((response) => {
+    if (response.ok) {
+      // Assuming the response is in JSON format
+      return response.json(); // Corrected this line
+    } else {
+      // Handle API request errors
+      throw new Error("API request failed");
+    }
+  })
+  .then((data) => {
+    // Update the tableData state with the data from the API response
+    console.log("data table", data.data)
+
+    setData(data.data);
+    onDataFetched(data.data);
+    
+  })
+  .catch((error) => {
+    // Handle network errors or other exceptions
+    console.error(error);
+  });
+};
+
+
+useEffect(() => {
+  // Call the function when the component is mounted (page is loaded)
+  runOnceOnPageLoad();
+}, []); 
+  
 
   const [courses, setCourses] = useState([]);
 
@@ -58,7 +90,8 @@ export default function Header({ onDataFetched }) {
     }
 
     queryParams.pages = 1;
-    queryParams.matricNo = "EGL/2017/303"; 
+    queryParams.description = "Late Registration";
+    // queryParams.matricNo = "EGL/2017/303"; 
 
     
     const queryString = new URLSearchParams(queryParams).toString();

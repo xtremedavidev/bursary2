@@ -11,12 +11,16 @@ export default function Header({ onDataFetched }) {
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedPart, setSelectedPart] = useState(""); // Define selectedPart state
+  const [selectedSession, setselectedSession] = useState([]);
+
+
 
   const [courses, setCourses] = useState([]);
 
   const faculties = Object.keys(departments);
 
-  
+  const onsessionChange = (selectedSession1) => {
+      setselectedSession(selectedSession1)  }
 
   const handleFacultyChange = (faculty) => {
     setSelectedFaculty(faculty);
@@ -33,9 +37,9 @@ export default function Header({ onDataFetched }) {
     // Prepare the data to send to the API
     const queryParams = {};
 
-    // if (selectedSession) {
-    //   queryParams.session = selectedSession;
-    // }
+    if (selectedSession) {
+      queryParams.session = selectedSession;
+    }
     
     // if (selectedSemester) {
     //   queryParams.semester = selectedSemester;
@@ -52,8 +56,13 @@ export default function Header({ onDataFetched }) {
     if (selectedDepartment) {
       queryParams.department = selectedDepartment;
     }
+
+    queryParams.pages = 1;
+    queryParams.matricNo = "EGL/2017/303"; 
+
     
     const queryString = new URLSearchParams(queryParams).toString();
+    console.log(queryString)
     
 
     fetch(`https://bursarybackend.onrender.com/getData?${queryString}`)
@@ -90,7 +99,7 @@ export default function Header({ onDataFetched }) {
         <h1 className="text-2xl text-white font-semibold pb-4">Dashboard</h1>
         <div className="w-full grid grid-cols-1 gap-4">
           <div className="flex w-full space-x-4">
-            <SessionSelect className="flex-1" />
+            <SessionSelect className="flex-1 text-black" SessionSelect={selectedSession} onsessionChange={onsessionChange} />
             <SemesterSelect className="flex-1" semesters={courses} />
           </div>
 

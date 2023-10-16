@@ -2,9 +2,9 @@ import React from 'react';
 
 const FacultySelect = ({ faculties, onSelect }) => {
   return (
-    <div className="flex-1 mx-10">
+    <div className="flex-1 m-2">
       <div>
-        <label htmlFor="faculty" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="faculty" className="block text-sm font-medium text-black">
           Select Faculty
         </label>
         <select

@@ -2,7 +2,7 @@ import React from "react";
 
 const PartSelect = ({ selectedPart, onPartChange }) => {
   return (
-    <div className="flex-1 m-10">
+    <div className="flex-1 m-2">
       <label htmlFor="part" className="block text-sm font-medium">
         Select Part
       </label>

@@ -13,10 +13,10 @@ export default function HomePage() {
   };
 
   return (
-    <Layout>
+    <Layout className="w-screen">
       <Header onDataFetched={handleDataFetched} />
-      <div className='m-4'>
-        <Table className="w-full" data={datagotten} /> {/* Pass the data to the Table component */}
+      <div className='w-screen flex justify-center flex-col'>
+        <Table data={datagotten} /> {/* Pass the data to the Table component */}
       </div>
       <Pagination
         totalItems={datagotten.length}

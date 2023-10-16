@@ -2,7 +2,7 @@ import React from 'react';
 
 const SemesterSelect = ({ selectedSemester, onSemesterChange }) => {
   return (
-    <div className='flex-1 mx-10'>
+    <div className='flex-1 m-2'>
       <label htmlFor="semester" className="block text-sm font-medium ">
         Select Semester
       </label>

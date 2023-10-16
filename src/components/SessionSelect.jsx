@@ -16,7 +16,7 @@ function SessionSelect({onsessionChange, selectedSession}) {
   }, []);
 
   return (
-    <div className="flex-1 m-10">
+    <div className="flex-1 m-2">
     <label htmlFor="Session" className="block text-sm font-medium">
       Select Session
     </label>

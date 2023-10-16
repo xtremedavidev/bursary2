@@ -4,7 +4,7 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage, onPa
     const totalPages = Math.ceil(totalItems / itemsPerPage);
   
     return (
-      <div className="flex items-center justify-center mt-4">
+      <div className="flex items-center justify-center m-4">
         <span className="text-gray-700">Page {currentPage} of {totalPages}</span>
         <button
           className={`px-3 py-1 text-white bg-blue-700 rounded-md ml-2 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-900'}`}

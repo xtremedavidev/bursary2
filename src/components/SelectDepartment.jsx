@@ -36,9 +36,9 @@ const SelectDepartment = ({ faculties, selectedFaculty, onDepartmentChange }) =>
 
   return (
     <div className="flex-1 m-2">
-      <div className="flex-1 mx-10">
+      <div className="">
         <div>
-          <label htmlFor="department" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="department" className="block text-sm font-medium text-black">
             Select Department
           </label>
           <select

@@ -5,54 +5,56 @@ import FacultySelect from "./FacultySelect";
 import PartSelect from "./PartSelect";
 import SelectDepartment from "./SelectDepartment"; // Import the new component
 import departments from "./departments";
+import SelectDescription from "./SelectDescription";
+import RegNumberSearch from "./RegNumberSearch";
 
 export default function Header({ onDataFetched }) {
   const [datagotten, setData] = useState([]); // State to store the fetched data
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedPart, setSelectedPart] = useState(""); // Define selectedPart state
-  const [selectedSession, setselectedSession] = useState([]);
+  const [regNumber, setRegNumber] = useState("");
 
+  const [selectedDescription, setSelectedDesc] = useState(""); // Define selectedPart state
+  const [selectedSession, setselectedSession] = useState("");
 
-const runOnceOnPageLoad = () => {
-  console.log('This runs once when the page is loaded.');
-  fetch(`https://bursarybackend.onrender.com/getData`)
-  .then((response) => {
-    if (response.ok) {
-      // Assuming the response is in JSON format
-      return response.json(); // Corrected this line
-    } else {
-      // Handle API request errors
-      throw new Error("API request failed");
-    }
-  })
-  .then((data) => {
-    // Update the tableData state with the data from the API response
-    console.log("data table", data.data)
+  const runOnceOnPageLoad = () => {
+    console.log("This runs once when the page is loaded.");
+    fetch(`https://bursarybackend.onrender.com/getData`)
+      .then((response) => {
+        if (response.ok) {
+          // Assuming the response is in JSON format
+          return response.json(); // Corrected this line
+        } else {
+          // Handle API request errors
+          throw new Error("API request failed");
+        }
+      })
+      .then((data) => {
+        // Update the tableData state with the data from the API response
+        console.log("data table", data.data);
 
-    setData(data.data);
-    onDataFetched(data.data);
-    
-  })
-  .catch((error) => {
-    // Handle network errors or other exceptions
-    console.error(error);
-  });
-};
+        setData(data.data);
+        onDataFetched(data.data);
+      })
+      .catch((error) => {
+        // Handle network errors or other exceptions
+        console.error(error);
+      });
+  };
 
-
-useEffect(() => {
-  // Call the function when the component is mounted (page is loaded)
-  runOnceOnPageLoad();
-}, []); 
-  
+  useEffect(() => {
+    // Call the function when the component is mounted (page is loaded)
+    runOnceOnPageLoad();
+  }, []);
 
   const [courses, setCourses] = useState([]);
 
   const faculties = Object.keys(departments);
 
   const onsessionChange = (selectedSession1) => {
-      setselectedSession(selectedSession1)  }
+    setselectedSession(selectedSession1);
+  };
 
   const handleFacultyChange = (faculty) => {
     setSelectedFaculty(faculty);
@@ -61,82 +63,127 @@ useEffect(() => {
     setCourses(depts);
   };
 
+  const onDescriptionChange = (selectedDescription) => {
+    setSelectedDesc(selectedDescription);
+  };
+
+
+
   const onPartChange = (part) => {
     setSelectedPart(part);
   };
 
   const handleSubmit = () => {
-    // Prepare the data to send to the API
-    const queryParams = {};
+    console.log("reg", regNumber)
+    if (regNumber) {
+      fetch(`https://bursarybackend.onrender.com/getData?matricNo=${regNumber}`)
+        .then((response) => {
+          if (response.ok) {
+            // Assuming the response is in JSON format
+            return response.json(); // Corrected this line
+          } else {
+            // Handle API request errors
+            throw new Error("API request failed");
+          }
+        })
+        .then((data) => {
+          // Update the tableData state with the data from the API response
+          console.log("data table", data.data);
 
-    if (selectedSession) {
-      queryParams.session = selectedSession;
-    }
-    
-    // if (selectedSemester) {
-    //   queryParams.semester = selectedSemester;
-    // }
-    
-    if (selectedFaculty) {
-      queryParams.faculty = selectedFaculty;
-    }
-    
-    if (selectedPart) {
-      queryParams.part = selectedPart;
-    }
-    
-    if (selectedDepartment) {
-      queryParams.department = selectedDepartment;
-    }
+          setData(data.data);
+          onDataFetched(data.data);
+        })
+        .catch((error) => {
+          // Handle network errors or other exceptions
+          console.error(error);
+        });
+    } else {
+      // Prepare the data to send to the API
 
-    queryParams.pages = 1;
-    queryParams.description = "Late Registration";
-    // queryParams.matricNo = "EGL/2017/303"; 
+      const queryParams = {};
 
-    
-    const queryString = new URLSearchParams(queryParams).toString();
-    console.log(queryString)
-    
-
-    fetch(`https://bursarybackend.onrender.com/getData?${queryString}`)
-    .then((response) => {
-      if (response.ok) {
-        // Assuming the response is in JSON format
-        return response.json(); // Corrected this line
-      } else {
-        // Handle API request errors
-        throw new Error("API request failed");
+      if (selectedSession) {
+        queryParams.session = selectedSession;
       }
-    })
-    .then((data) => {
-      // Update the tableData state with the data from the API response
-      console.log("data table", data.data)
 
-      setData(data.data);
-      onDataFetched(data.data);
-      
-    })
-    .catch((error) => {
-      // Handle network errors or other exceptions
-      console.error(error);
-    });
-  
+      // if (selectedSemester) {
+      //   queryParams.semester = selectedSemester;
+      // }
+
+      if (selectedFaculty) {
+        queryParams.faculty = selectedFaculty;
+      }
+
+      if (selectedPart) {
+        queryParams.part = selectedPart;
+      }
+
+      if (selectedDepartment) {
+        queryParams.department = selectedDepartment;
+      }
+
+      if (selectedDescription) {
+        queryParams.description = selectedDescription;
+      }
+
+      queryParams.pages = 1;
+      // queryParams.matricNo = "EGL/2017/303";
+
+      const queryString = new URLSearchParams(queryParams).toString();
+      console.log(queryString);
+
+      fetch(`https://bursarybackend.onrender.com/getData?${queryString}`)
+        .then((response) => {
+          if (response.ok) {
+            // Assuming the response is in JSON format
+            return response.json(); // Corrected this line
+          } else {
+            // Handle API request errors
+            throw new Error("API request failed");
+          }
+        })
+        .then((data) => {
+          // Update the tableData state with the data from the API response
+          console.log("data table", data.data);
+
+          setData(data.data);
+          onDataFetched(data.data);
+        })
+        .catch((error) => {
+          // Handle network errors or other exceptions
+          console.error(error);
+        });
+    }
   };
+
+
+
+  const setRegNumber1 = (regNumber1)=>{
+
+    setRegNumber(regNumber1);
+
+  }
+
+
+
   const handleDepartmentChange = (department) => {
     setSelectedDepartment(department);
   };
 
   return (
-    <header className="bg-blue-900 py-4">
-      <div className="container mx-auto flex flex-col pl-8 text-black items-center justify-between">
+    <header className="w-[100vw] bg-blue-900 py-4">
+      <div className="w-screen container mx-auto flex flex-col px-4 text-black items-center justify-between">
         <h1 className="text-2xl text-white font-semibold pb-4">Dashboard</h1>
-        <div className="w-full grid grid-cols-1 gap-4">
-          <div className="flex w-full space-x-4">
-            <SessionSelect className="flex-1 text-black" SessionSelect={selectedSession} onsessionChange={onsessionChange} />
+        <div className="w-fill grid grid-cols-1 gap-4">
+          <div className="flex  space-x-4">
+            <SessionSelect
+              className="flex-1 text-black"
+              onsessionChange={onsessionChange}
+            />
             <SemesterSelect className="flex-1" semesters={courses} />
           </div>
 
-          <div className="flex w-full space-x-4">
+          <div className="flex  space-x-4">
             <FacultySelect
               className="flex-1"
               faculties={faculties}
@@ -155,6 +202,16 @@ useEffect(() => {
 
           <div className="flex space-x-4">
             <PartSelect className="flex-1" onPartChange={onPartChange} />
+            <SelectDescription
+              className="flex-1"
+              onDescriptionChange={onDescriptionChange}
+              selectedDescription={selectedDescription}
+            />
+          </div>
+
+          <div className="flex space-x-4">
+            <RegNumberSearch className="flex-1" setRegNumber1={setRegNumber1} regNumber={regNumber}/>
+           
           </div>
 
           <button

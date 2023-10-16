@@ -41,27 +41,27 @@ const StudentPage = () => {
 
 
   return (
-    // <div className="container mx-auto p-4">
-    //   <h2 className="text-2xl font-semibold mb-4">Student Information</h2>
-    //   <div className="border border-gray-300 p-4 rounded-md mb-6">
-    //     <p>
-    //       <strong>Name:</strong> {datagotten.Names}
-    //     </p>
-    //     <p>
-    //       <strong>Matric Number:</strong> {studentData.RegNo}
-    //     </p>
-    //     <p>
-    //       <strong>Faculty:</strong> {studentData.faculty}
-    //     </p>
+    <div className="container mx-auto p-4">
+      {/* <h2 className="text-2xl font-semibold mb-4">Student Information</h2>
+      <div className="border border-gray-300 p-4 rounded-md mb-6">
+        <p>
+          <strong>Name:</strong> {datagotten.Names}
+        </p>
+        <p>
+          <strong>Matric Number:</strong> {studentData.RegNo}
+        </p>
+        <p>
+          <strong>Faculty:</strong> {studentData.faculty}
+        </p>
      
-    //     <p>
-    //       <strong>Department:</strong> {studentData.DeptName}
-    //     </p>
-    //   </div>
+        <p>
+          <strong>Department:</strong> {studentData.DeptName}
+        </p>
+      </div> */}
 
-    //   <h2 className="text-2xl font-semibold mb-4">Transaction History</h2>
-    //   <Table data={datagotten} />
-    // </div>
+      <h2 className="text-2xl font-semibold mb-4">Transaction History</h2>
+      <Table data={datagotten} />
+    </div>
   );
 };
 

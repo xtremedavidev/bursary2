@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 // Sample student data
 
 
-const [datagotten, setTableData] = useState([]); // State to store the table data
+// const [datagotten, setTableData] = useState([]); // State to store the table data
 
 
 
@@ -12,28 +12,28 @@ const StudentPage = () => {
 
 
 
-  const runOnceOnPageLoad = () => {
-    fetch(`https://bursarybackend.onrender.com/reports`)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("API request failed");
-        }
-      })
-      .then((data) => {
-        setTableData(data.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  // const runOnceOnPageLoad = () => {
+  //   fetch(`https://bursarybackend.onrender.com/reports`)
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         return response.json();
+  //       } else {
+  //         throw new Error("API request failed");
+  //       }
+  //     })
+  //     .then((data) => {
+  //       setTableData(data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   
-  useEffect(() => {
-    // Call the function when the component is mounted (page is loaded)
-    runOnceOnPageLoad();
-  }, []);
+  // useEffect(() => {
+  //   // Call the function when the component is mounted (page is loaded)
+  //   runOnceOnPageLoad();
+  // }, []);
 
 
 
@@ -59,8 +59,8 @@ const StudentPage = () => {
         </p>
       </div> */}
 
-      <h2 className="text-2xl font-semibold mb-4">Transaction History</h2>
-      <Table data={datagotten} />
+      {/* <h2 className="text-2xl font-semibold mb-4">Transaction History</h2>
+      <Table data={datagotten} /> */}
     </div>
   );
 };

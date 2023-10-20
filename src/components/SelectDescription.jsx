@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-function SelectDescription({onDescriptionChange, selectedDescription}) {
+function SelectDescription({onDescriptionChange, selectedDescription, descdatalist}) {
   const [sessions, setSessions] = useState([]);
+  const [dsecdata, setdescdata] = useState([]);
+
 
   useEffect(() => {
     // Fetch sessions from your API
@@ -30,7 +32,7 @@ function SelectDescription({onDescriptionChange, selectedDescription}) {
       <option value="">Choose description</option>
       {/* Add your Session options here */}
       <option value="Acceptance Fee">Acceptance Fee</option>
-      <option value="Convocation Fee">Convocation Fe</option>
+      <option value="Convocation Fee">Convocation Fee</option>
       <option value="Stalite Fees(Two Semesters)">Stalite Fees(Two Semesters)</option>
       <option value="Stalite Fees(One Semesters)">Stalite Fees(One Semesters)</option>
       <option value="Accommodation(stalite)">Accommodation(stalite)</option>

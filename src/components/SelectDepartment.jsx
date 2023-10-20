@@ -7,7 +7,7 @@ const SelectDepartment = ({ faculties, selectedFaculty, onDepartmentChange }) =>
   useEffect(() => {
     if (selectedFaculty) {
       // Fetch departments for the selected faculty
-      fetch(`https://bursarybackend.onrender.com/filters?faculty=${selectedFaculty}`)
+      fetch(`https://bursarybackend.onrender.com/filters`)
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -16,8 +16,10 @@ const SelectDepartment = ({ faculties, selectedFaculty, onDepartmentChange }) =>
           }
         })
         .then((data) => {
-          setFacultyDepartments(data.data);
-          console.log(data)
+          const deptdata = data.data.departments;
+          console.log(deptdata[selectedFaculty])
+          setFacultyDepartments(deptdata[selectedFaculty]);
+
         })
         .catch((error) => {
           console.error(error);

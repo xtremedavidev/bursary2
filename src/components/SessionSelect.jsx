@@ -25,7 +25,7 @@ function SessionSelect({onsessionChange, selectedSession}) {
       name="Session"
       value={selectedSession}
       onChange={(e) => onsessionChange(e.target.value)}
-      className="mt-1 p-2 border-gray-200 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+      className="mt-1 border-gray-400 block w-full p-3 pr-10 py-2 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
     >
       <option value=""></option>
       {/* Add your Session options here */}

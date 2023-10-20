@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef  } from 'react';
+// Table.js
+import React, { useState, useEffect, useRef } from 'react';
 
-function Table({ data, page, onPageChange }) {
-  const [csvData, setCsvData] = useState(''); // State to store CSV data
+function Table({ data, page, onPageChange, onSortChange, selectedSort }) {
+  const [csvData, setCsvData] = useState('');
 
   // Calculate the total number of students fetched
   const totalStudents = data.length;
@@ -9,7 +10,6 @@ function Table({ data, page, onPageChange }) {
   // Calculate the total amount paid
   const totalAmountPaid = data.reduce((total, student) => total + student.PayAmount, 0);
 
-  // Function to convert data to CSV format and trigger download
   const handleDownload = () => {
     // Create a CSV string from the data
     const csv = [
@@ -31,49 +31,39 @@ function Table({ data, page, onPageChange }) {
     window.URL.revokeObjectURL(url);
   };
 
-  // Function to handle scrolling and load more data
-  const handleIntersection = (entries) => {
-    if (entries[0].isIntersecting) {
-      // User has scrolled to the end, load more data
-      onPageChange(page + 1);
-      console.log*
-    }
+  const handleSort = (sortItem) => {
+    onSortChange(sortItem);
   };
-  
 
-  const observer = new IntersectionObserver(handleIntersection, {
-    root: null, // Use the viewport as the root
-    rootMargin: '0px', // No margin
-    threshold: 0.1, // Trigger when 10% of the container is visible
-  });
-  
-
-
-
-
-  const tableRef = useRef();
+  const tableRef = useRef(null);
 
   useEffect(() => {
-    if (tableRef.current) {
-      observer.observe(tableRef.current);
-    }
-  
-    return () => {
-      if (tableRef.current) {
-        observer.unobserve(tableRef.current);
+    const table = tableRef.current;
+
+    const handleScroll = () => {
+      if (table) {
+        const scrollTop = table.scrollTop;
+        const containerHeight = table.clientHeight;
+        const scrollHeight = table.scrollHeight;
+
+        if (scrollTop + containerHeight >= scrollHeight * 0.9) {
+          onPageChange(page + 1);
+        }
       }
     };
-  }, [tableRef, page, onPageChange]);
 
-  
+    if (table) {
+      table.addEventListener('scroll', handleScroll, { passive: true });
 
+      return () => {
+        table.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [page, onPageChange]);
 
   return (
-    <div className="w-screen">
+    <div className="flex flex-col w-screen" id="table-container" ref={tableRef}>
       <div className="text-center text-sm md:ml-64 text-gray-900 my-8">
-        <p className="md:text-lg font-semibold">
-          Total Number of Students Fetched: {totalStudents}
-        </p>
         <p className="md:text-lg font-semibold">
           Total Amount Paid: {totalAmountPaid}
         </p>
@@ -85,59 +75,72 @@ function Table({ data, page, onPageChange }) {
         </button>
       </div>
 
-      <div id=""  ref={tableRef} className="md:ml-64 overflow-auto">
-        <table className="table-container mx-auto overflow-auto bg-white border border-gray-200">
-         
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
-              S/N
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
-              Reg Number
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
-              Name
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
-              Pay Amount
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
-              Description
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
-              Dept
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
-              Faculty
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
-              Part
-            </th>
-          </tr>
-        </thead>
-        <tbody className="text-black">
-          {Array.isArray(data) && data.length > 0 ? (
-            data.map((item, index) => (
-              <tr key={index} className="border-b border-gray-200">
-                <td className="py-3 px-4">{index + 1}</td>
-                <td className="py-3 px-4">{item.RegNo}</td>
-                <td className="py-3 px-4">{item.Names}</td>
-                <td className="py-3 px-4">{item.PayAmount}</td>
-                <td className="py-3 px-4">{item.PayDescription}</td>
-                <td className="py-3 px-4">{item.DeptName}</td>
-                <td className="py-3 px-4">{item.facultyId}</td>
-                <td className="py-3 px-4">{item.Part}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="2">No data available</td>
-              {/* Add other columns to match your table structure */}
+      <div className="flex justify-end">
+        <select
+          id="sort"
+          name="sort"
+          value={selectedSort}
+          onChange={(e) => handleSort(e.target.value)}
+          className="w-60 p-2 border-gray-200 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+        >
+          <option value="">Sort by</option>
+          {/* Add your sorting options here */}
+        </select>
+      </div>
+
+      <div  className="md:ml-64 overflow-auto h-full">
+        <table className="table-container mx-auto overflow-auto bg-white border border-gray-200" >
+
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
+                S/N
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
+                Reg Number
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
+                Name
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
+                Pay Amount
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
+                Description
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
+                Dept
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
+                Faculty
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-900">
+                Part
+              </th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="text-black">
+            {Array.isArray(data) && data.length > 0 ? (
+              data.map((item, index) => (
+                <tr key={index} className="border-b border-gray-200">
+                  <td className="py-3 px-4">{index + 1}</td>
+                  <td className="py-3 px-4">{item.RegNo}</td>
+                  <td className="py-3 px-4">{item.Names}</td>
+                  <td className="py-3 px-4">{item.PayAmount}</td>
+                  <td className="py-3 px-4">{item.PayDescription}</td>
+                  <td className="py-3 px-4">{item.DeptName}</td>
+                  <td className="py-3 px-4">{item.facultyId}</td>
+                  <td className="py-3 px-4">{item.Part}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="2">No data available</td>
+                {/* Add other columns to match your table structure */}
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

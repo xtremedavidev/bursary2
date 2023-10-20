@@ -8,7 +8,7 @@ import departments from "./departments";
 import SelectDescription from "./SelectDescription";
 import RegNumberSearch from "./RegNumberSearch";
 
-export default function Header({ onDataFetched, page}) {
+export default function Header({ onDataFetched, page, sort}) {
   const [datagotten, setData] = useState([]); // State to store the fetched data
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -20,7 +20,7 @@ export default function Header({ onDataFetched, page}) {
 
   const runOnceOnPageLoad = () => {
     console.log("This runs once when the page is loaded.");
-    fetch(`https://bursarybackend.onrender.com/getData`)
+    fetch(`https://bursarybackend.onrender.com/fetchDataForDownload`)
       .then((response) => {
         if (response.ok) {
           // Assuming the response is in JSON format
@@ -172,57 +172,58 @@ export default function Header({ onDataFetched, page}) {
   };
 
   return (
-    <header className="w-[100vw] bg-blue-900 py-4">
-      <div className="w-screen container mx-auto flex flex-col px-4 text-black items-center justify-between">
-        <h1 className="text-2xl text-white font-semibold pb-4">Dashboard</h1>
-        <div className="w-fill grid grid-cols-1 gap-4">
-          <div className="flex  space-x-4">
-            <SessionSelect
-              className="flex-1 text-black"
-              onsessionChange={onsessionChange}
-            />
-            <SemesterSelect className="flex-1" semesters={courses} />
-          </div>
+    <header className=" md:ml-64  bg-gray-200 py-6">
+    <div className=" mx-auto px-4 text-black items-center">
+      <h1 className="text-2xl font-semibold pb-4">Dashboard</h1>
+      <RegNumberSearch
+        className="w-full mb-4"
+        setRegNumber1={setRegNumber1}
+        regNumber={regNumber}
+      />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4">
+          <SessionSelect
+            className="w-full text-black"
+            onsessionChange={onsessionChange}
+          />
+          <SemesterSelect className="w-full" semesters={courses} />
+        </div>
 
-          <div className="flex  space-x-4">
-            <FacultySelect
-              className="flex-1"
-              faculties={faculties}
-              onSelect={handleFacultyChange}
-            />
-            <SelectDepartment
-              className="flex-1"
-              faculties={faculties}
-              departments={departments}
-              selectedFaculty={selectedFaculty}
-              onFacultyChange={handleFacultyChange}
-              selectedDepartment={selectedDepartment}
-              onDepartmentChange={handleDepartmentChange}
-            />
-          </div>
+        <div className="space-y-4">
+          <FacultySelect
+            className="w-full"
+            faculties={faculties}
+            onSelect={handleFacultyChange}
+          />
+          <SelectDepartment
+            className="w-full"
+            faculties={faculties}
+            departments={departments}
+            selectedFaculty={selectedFaculty}
+            onFacultyChange={handleFacultyChange}
+            selectedDepartment={selectedDepartment}
+            onDepartmentChange={handleDepartmentChange}
+          />
+        </div>
 
-          <div className="flex space-x-4">
-            <PartSelect className="flex-1" onPartChange={onPartChange} />
-            <SelectDescription
-              className="flex-1"
-              onDescriptionChange={onDescriptionChange}
-              selectedDescription={selectedDescription}
-            />
-          </div>
-
-          <div className="flex space-x-4">
-            <RegNumberSearch className="flex-1" setRegNumber1={setRegNumber1} regNumber={regNumber}/>
-           
-          </div>
-
-          <button
-            onClick={handleSubmit}
-            className="p-4 mx-auto w-fit justify-center bg-blue-200 text-color-white rounded-lg"
-          >
-            Fetch
-          </button>
+        <div className="space-y-4">
+          <PartSelect className="w-full" onPartChange={onPartChange} />
+          <SelectDescription
+            className="w-full"
+            onDescriptionChange={onDescriptionChange}
+            selectedDescription={selectedDescription}
+          />
         </div>
       </div>
-    </header>
+      <div className="text-center">
+        <button
+          onClick={handleSubmit}
+          className="p-4 m-8 w-fit justify-center bg-blue-200 text-color-white rounded-full hover:bg-blue-300 focus:outline-none focus:ring focus:ring-blue-400"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </header>
   );
 }

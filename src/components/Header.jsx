@@ -8,7 +8,7 @@ import departments from "./departments";
 import SelectDescription from "./SelectDescription";
 import RegNumberSearch from "./RegNumberSearch";
 
-export default function Header({ onDataFetched }) {
+export default function Header({ onDataFetched, page}) {
   const [datagotten, setData] = useState([]); // State to store the fetched data
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -163,6 +163,7 @@ export default function Header({ onDataFetched }) {
     setRegNumber(regNumber1);
 
   }
+
 
 
 

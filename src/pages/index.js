@@ -6,17 +6,23 @@ import Header from '../components/Header';
 
 export default function HomePage() {
   const [datagotten, setTableData] = useState([]); // State to store the table data
+  const [page, setPage] = useState([]); // State to store the table data
 
   const handleDataFetched = (datagotten) => {
     // Update the tableData state with the fetched data
     setTableData(datagotten);
   };
 
+  const handlepageset = (pageset) => {
+    // Update the tableData state with the fetched data
+    setPage(pageset);
+  };
+  
   return (
     <Layout className="w-screen">
-      <Header onDataFetched={handleDataFetched} />
+      <Header onDataFetched={handleDataFetched} page={page} />
       <div className='w-screen flex justify-center flex-col'>
-        <Table data={datagotten} /> {/* Pass the data to the Table component */}
+        <Table data={datagotten} page={page} onPageChange={handlepageset} /> {/* Pass the data to the Table component */}
       </div>
       <Pagination
         totalItems={datagotten.length}
